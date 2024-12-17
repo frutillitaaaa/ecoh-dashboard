@@ -1,0 +1,36 @@
+{/* Medidas Cautelares */}
+<div className="space-y-2">
+                        <h5 className="font-medium">Medidas Cautelares</h5>
+                        {imputado.medidasCautelares?.length ? (
+                          <div className="grid gap-2">
+                            {imputado.medidasCautelares.map((medida) => (
+                              <div
+                                key={medida.id}
+                                className="rounded-lg bg-muted p-3"
+                              >
+                                <div className="mb-2 flex items-start justify-between">
+                                  <h6 className="font-medium">{medida.tipo}</h6>
+                                  <div className="text-sm text-muted-foreground">
+                                    {format(
+                                      new Date(medida.fechaInicio),
+                                      'dd/MM/yyyy',
+                                      { locale: es }
+                                    )}
+                                    {medida.fechaTermino &&
+                                      ` - ${format(
+                                        new Date(medida.fechaTermino),
+                                        'dd/MM/yyyy',
+                                        { locale: es }
+                                      )}`}
+                                  </div>
+                                </div>
+                                <p className="text-sm">{medida.descripcion}</p>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">
+                            No hay medidas cautelares registradas
+                          </p>
+                        )}
+                      </div>

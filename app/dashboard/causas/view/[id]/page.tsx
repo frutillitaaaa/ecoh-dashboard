@@ -32,7 +32,38 @@ interface Imputado {
   id: string;
   nombre: string;
   rut: string;
-  medidasCautelares?: MedidaCautelar[];
+  nacionalidadId: string;
+  fechaCreacion: string | null;
+  fechaActualizacion: string | null;
+  foto: string;
+  nacionalidad: {
+    id: string;
+    nombre: string;
+  };
+  causas?: CausaImputado[];
+}
+
+interface CausaImputado {
+  id: string;
+  causaId: string;
+  imputadoId: string;
+  esImputado: boolean;
+  esSujetoInteres: boolean;
+  formalizado: boolean;
+  fechaFormalizacion: string;
+  cautelarId: string;
+  causa: {
+    ruc: string
+  };
+  plazo: string;
+  imputado: {
+    nombreSujeto: string;
+    fotoPrincipal: string;
+  };
+  cautelar: {
+    nombre: string;
+  };
+  datosImputado:Imputado;
 }
 
 interface Causa {
@@ -67,7 +98,8 @@ interface Causa {
 export default function CausaViewPage() {
   const params = useParams();
   const [causa, setCausa] = useState<Causa | null>(null);
-  const [imputados, setImputados] = useState<Imputado[]>([]);
+  const [imputados, setImputados] = useState<CausaImputado[]>([]);
+  const [datosImputado, setDatosImputado] = useState<Imputado[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -78,6 +110,7 @@ export default function CausaViewPage() {
         if (!causaResponse.ok) throw new Error('Error al cargar la causa');
         const causaData = await causaResponse.json();
         setCausa(causaData);
+        
 
         // 2. Obtener los imputados de la causa
         const imputadosResponse = await fetch(
@@ -87,6 +120,8 @@ export default function CausaViewPage() {
           throw new Error('Error al cargar los imputados');
         const imputadosData = await imputadosResponse.json();
 
+        
+        /*
         // 3. Para cada imputado, obtener sus medidas cautelares
         const imputadosConMedidas = await Promise.all(
           imputadosData.map(async (imputado: any) => {
@@ -110,8 +145,8 @@ export default function CausaViewPage() {
             }
           })
         );
-
-        setImputados(imputadosConMedidas);
+        */
+        setImputados(imputadosData);
       } catch (error) {
         console.error('Error al cargar los datos:', error);
         toast.error('Error al cargar los datos de la causa');
@@ -121,6 +156,28 @@ export default function CausaViewPage() {
     };
 
     fetchCausa();
+    const fetchImputado = async () => {
+      imputados.map(async (imputado: any) => { 
+        try {
+          //Obtener datos de cada imputado
+          const imputadosResponse = await fetch(
+            `/api/imputado/id=${imputado.imputado.imputadoId}`
+          )
+          if(!imputadosResponse.ok) 
+          throw new Error('Error al cargar los datos de los imputados');
+          const imputadosData = await imputadosResponse.json();
+
+          setDatosImputado(imputadosData);
+        } catch (error) {
+          console.error('Error al cargar los datos:', error);
+        }
+      });
+      
+        
+    };
+    
+    fetchImputado();
+
   }, [params.id]);
 
   if (loading) {
@@ -279,56 +336,22 @@ export default function CausaViewPage() {
             <CardContent>
               {imputados.length > 0 ? (
                 <div className="space-y-6">
-                  {imputados.map((imputado) => (
+                  {imputados.map((causaImputado) => (
                     <div
-                      key={imputado.id}
+                      key={causaImputado.id}
                       className="space-y-4 rounded-lg border p-4"
                     >
                       <div>
                         <h4 className="text-lg font-medium">
-                          {imputado.nombre}
+                          {causaImputado.imputado.nombreSujeto}
                         </h4>
                         <p className="text-sm text-muted-foreground">
-                          RUT: {imputado.rut || '-'}
+                          RUT: {causaImputado.datosImputado?.rut|| '-'}
                         </p>
                       </div>
-
+                      
                       {/* Medidas Cautelares */}
-                      <div className="space-y-2">
-                        <h5 className="font-medium">Medidas Cautelares</h5>
-                        {imputado.medidasCautelares?.length ? (
-                          <div className="grid gap-2">
-                            {imputado.medidasCautelares.map((medida) => (
-                              <div
-                                key={medida.id}
-                                className="rounded-lg bg-muted p-3"
-                              >
-                                <div className="mb-2 flex items-start justify-between">
-                                  <h6 className="font-medium">{medida.tipo}</h6>
-                                  <div className="text-sm text-muted-foreground">
-                                    {format(
-                                      new Date(medida.fechaInicio),
-                                      'dd/MM/yyyy',
-                                      { locale: es }
-                                    )}
-                                    {medida.fechaTermino &&
-                                      ` - ${format(
-                                        new Date(medida.fechaTermino),
-                                        'dd/MM/yyyy',
-                                        { locale: es }
-                                      )}`}
-                                  </div>
-                                </div>
-                                <p className="text-sm">{medida.descripcion}</p>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="text-sm text-muted-foreground">
-                            No hay medidas cautelares registradas
-                          </p>
-                        )}
-                      </div>
+                      {/* está en 1.txt*/}
                     </div>
                   ))}
                 </div>

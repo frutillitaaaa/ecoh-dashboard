@@ -34,3 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+components/GeneratePdf.tsx
+package.json
+yarn.lock
+components/GeneratePdf.tsx
+yarn.lock
+package.json
+package-lock.json
