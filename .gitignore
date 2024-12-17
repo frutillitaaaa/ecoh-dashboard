@@ -41,3 +41,4 @@ components/GeneratePdf.tsx
 yarn.lock
 package.json
 package-lock.json
+yarn.lock

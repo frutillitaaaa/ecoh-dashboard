@@ -8,11 +8,11 @@ export const navItems: NavItem[] = [
     label: 'Dashboard'
   },
   {
-    title: 'Gestión de Cauasas',
+    title: 'Gestión de Causas',
     icon: 'folder',
     subItems: [
       {
-        title: 'Cauas',
+        title: 'Causas',
         href: '/dashboard/causas',
         icon: 'briefcase',
         label: 'causas'
@@ -38,7 +38,7 @@ export const navItems: NavItem[] = [
   },
 
   {
-    title: 'Victimas',
+    title: 'Víctimas',
     href: '/dashboard/victima',
     icon: 'UserRound',
     label: 'victima'
@@ -56,7 +56,7 @@ export const navItems: NavItem[] = [
     icon: 'Net',
     subItems: [
       {
-        title: 'Gestion organizaciones',
+        title: 'Gestión organizaciones',
         href: '/dashboard/organizacion',
         icon: 'page'
       },
