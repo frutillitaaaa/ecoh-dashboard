@@ -59,6 +59,7 @@ interface CausaImputado {
   imputado: {
     nombreSujeto: string;
     fotoPrincipal: string;
+    docId:string;
   };
   cautelar: {
     nombre: string;
@@ -121,8 +122,20 @@ export default function CausaViewPage() {
         const imputadosData = await imputadosResponse.json();
 
         
-        /*
-        // 3. Para cada imputado, obtener sus medidas cautelares
+        
+        setImputados(imputadosData);
+      } catch (error) {
+        console.error('Error al cargar los datos:', error);
+        toast.error('Error al cargar los datos de la causa');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCausa();
+    /*
+    const fetchCautelaresImputado = async () => {
+     // 3. Para cada imputado, obtener sus medidas cautelares
         const imputadosConMedidas = await Promise.all(
           imputadosData.map(async (imputado: any) => {
             try {
@@ -145,18 +158,7 @@ export default function CausaViewPage() {
             }
           })
         );
-        */
-        setImputados(imputadosData);
-      } catch (error) {
-        console.error('Error al cargar los datos:', error);
-        toast.error('Error al cargar los datos de la causa');
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchCausa();
-    const fetchImputado = async () => {
       imputados.map(async (imputado: any) => { 
         try {
           //Obtener datos de cada imputado
@@ -176,8 +178,8 @@ export default function CausaViewPage() {
         
     };
     
-    fetchImputado();
-
+    fetchCautelaresImputado();
+    */
   }, [params.id]);
 
   if (loading) {
@@ -346,7 +348,7 @@ export default function CausaViewPage() {
                           {causaImputado.imputado.nombreSujeto}
                         </h4>
                         <p className="text-sm text-muted-foreground">
-                          RUT: {causaImputado.datosImputado?.rut|| '-'}
+                          RUT: {causaImputado.imputado.docId|| '-'}
                         </p>
                       </div>
                       

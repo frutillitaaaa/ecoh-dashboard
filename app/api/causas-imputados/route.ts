@@ -45,7 +45,8 @@ export async function GET(req: Request) {
           imputado: {
             select: {
               nombreSujeto: true,
-              fotoPrincipal: true 
+              fotoPrincipal: true,
+              docId: true 
             }
           },
           cautelar: {
