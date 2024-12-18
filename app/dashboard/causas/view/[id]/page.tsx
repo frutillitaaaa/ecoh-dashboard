@@ -222,7 +222,7 @@ export default function CausaViewPage() {
     }) : null,
     estado_ecoh: causa.causaEcoh,
     nombre_imputado: imputados.map(causaImputado => causaImputado.imputado.nombreSujeto) || null,
-  rut_imputado: imputados.map(causaImputado => causaImputado.imputado.docId) || null
+    rut_imputado: imputados.map(causaImputado => causaImputado.imputado.docId) || null
 };
 console.log(datosCausa);
   return (
