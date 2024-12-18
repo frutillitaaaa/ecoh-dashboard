@@ -63,7 +63,7 @@ const GeneratePdf :  React.FC<pdfProps> = ({ pdfData }) => {
                 {text: `\nCausa ECOH: ${estado}`},
                 {text: `\nImputados`, font: 'Roboto', bold: false, fontSize: 20},
                 ...nombre_imputado.map((nombre, index) => ({
-                    text: `\nNombre: ${nombre} \nRUT: ${rut_imputado[index]}`,
+                    text: `\nNombrea: ${nombre} \nRUT: ${rut_imputado[index]}`,
                     font: 'Roboto',
                     bold: false
                 }))
