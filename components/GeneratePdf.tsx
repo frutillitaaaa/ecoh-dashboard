@@ -20,6 +20,8 @@ interface DatosCausa {
     fecha_toma_conocimiento: string | null;
     fecha_del_hecho: string | null;
     estado_ecoh: boolean;
+    nombre_imputado: string[] | null;
+    rut_imputado: string[] | null;
 }
 
 interface pdfProps {
@@ -43,6 +45,8 @@ const GeneratePdf :  React.FC<pdfProps> = ({ pdfData }) => {
         const delito = params.delito ?? '-';
         const fecha_toma_conocimiento = params.fecha_toma_conocimiento ?? '-';
         const fecha_del_hecho = params.fecha_del_hecho ?? '-';
+        const nombre_imputado = params.nombre_imputado ?? ['-'];
+        const rut_imputado = params.rut_imputado ?? ['-'];
 
         const documentDefinition = {
 
@@ -56,7 +60,13 @@ const GeneratePdf :  React.FC<pdfProps> = ({ pdfData }) => {
                 {text: `\nFolio BW: ${params.folio_bw}`},
                 {text: `\nFecha del hecho: ${fecha_del_hecho}`},
                 {text: `\nFecha Toma de conocimiento: ${fecha_toma_conocimiento}`},
-                {text: `\nECOH: ${estado}`}
+                {text: `\nCausa ECOH: ${estado}`},
+                {text: `\nImputados`, font: 'Roboto', bold: false, fontSize: 20},
+                ...nombre_imputado.map((nombre, index) => ({
+                    text: `\nNombre: ${nombre} \nRUT: ${rut_imputado[index]}`,
+                    font: 'Roboto',
+                    bold: false
+                }))
 
             ],
         };
